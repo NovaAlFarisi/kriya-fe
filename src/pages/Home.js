@@ -1,11 +1,8 @@
 import {useContext} from 'react'
-import {Link} from 'react-router-dom'
 import {ItemContext} from '../context/ItemContext';
-import {CartContext} from '../context/CartContext';
 import Product from '../components/product/ProductComponent';
 const Home = () => {
     const [item, setItem] = useContext(ItemContext);
-    const [cart, setCart] = useContext(CartContext);
     return (
         <div className="container">
         <h1>Products</h1>

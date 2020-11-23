@@ -1,37 +1,27 @@
-import { useEffect, useState } from 'react';
-import KriyaApi from './api/KriyaApi'
-import Product from './components/product/productComponent'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Home from './pages/Home';
+import Cart from './pages/Cart';
+import { ItemProvider } from './context/ItemContext';
+import {CartProvider} from './context/CartContext';
+import NavigationBar from './components/NavigationBar/NavigationBar';
+import './App.css';
 function App() {
-  const [products, setProducts] = useState([])
-  useEffect(()=>{
-    const fetchData = async () => {
-      try {
-        await KriyaApi.get('/').then(result=>{
-          let data = result.data;
-          let productsData = data.map((item,i)=>{
-            return {...item, qty:0}
-          })
-          setProducts(productsData)
-        })
-      } catch (error) {
-        alert('Network error')
-      }
-    }
-
-    fetchData()
-  },[])
-  console.log(products)
   return (
-    <div className="container">
-      <h1>Products</h1>
-      {(!products ? (<p>Fetching products ...</p>) : (
-        <div className="products-wrapper">
-          {products.map((val,i)=>(
-            <Product key={i} identifier={i} data={val}/>
-          ))}
-        </div>
-      ))}
-    </div>
+    <ItemProvider>
+      <CartProvider>
+        <Router>
+          <NavigationBar/>
+          <Switch>
+            <Route path="/" exact>
+              <Home/>
+            </Route>
+            <Route path="/cart" exact>
+              <Cart/>
+            </Route>
+          </Switch>
+        </Router>
+      </CartProvider>
+    </ItemProvider>
   );
 }
 
